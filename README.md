@@ -17,6 +17,6 @@ var0 = instagram username, var1 = instagram password, var3 = time in minutes bet
 * more knowledge on os module
 * how to scrape reddit repositories
 * how to navigate through instagram in python
-* file encoding with SHA encryption
+* Using SHA1 & SHA256 hash
 
 
