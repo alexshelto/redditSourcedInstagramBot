@@ -3,6 +3,11 @@ This bot will pull posts from reddit and upload them to instagram
 program is currently designed to download memes
 ## program takes 2 arguments: instagram username and password
 > python3 app.py username password
+## requirements:
+* InstagramApi: pip install
+* praw
+* json
+* hashlib
 
 ### What I learned
 * json data parsing
