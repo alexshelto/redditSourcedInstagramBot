@@ -5,8 +5,8 @@ program is currently designed to download memes
 > python3 app.py username password
 
 ### What I learned
-*json data parsing
-*more knowledge on requests
+* json data parsing
+* more knowledge on requests
 *more knowledge on os module
 *how to scrape reddit repositories
 *how to navigate through instagram in python
