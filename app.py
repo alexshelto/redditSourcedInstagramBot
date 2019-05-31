@@ -17,11 +17,11 @@ import sys #arguments to the script
 
            #visit reddit preferences api
 ######### Reddit API Credentials #############################
-client_id= 'bggfuF1vKehqyg'
-client_secret='pxIaMYmHVN3i28oYKk-D1qGv9_g'
-password='memeanddestroy'
-user_agent = 'memePuller'
-username = 'almightyMeme'
+client_id= ''
+client_secret=''
+password=''
+user_agent = ''
+username = ''
 ##############################################################
 
 path = '' #Path of where files should be saved to
