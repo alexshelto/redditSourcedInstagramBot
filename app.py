@@ -60,12 +60,9 @@ def addTags():
 def postImage():
     randomImage = random.randrange(0,len(files))
     randomCaption = random.randrange(0,len(captionList))
-
     desiredFile = files[randomImage]
     desiredCaption = captionList[randomCaption]
-
     instaBot.uploadPhoto(desiredFile, caption=desiredCaption)
-
     print("Image has been posted")
     #delete file from directory and list:
     del files[randomImage] #deleted from list
@@ -123,6 +120,7 @@ def save(post):
 def wipeAllFiles():
     for file in files:
         os.remove(file)
+    print("Wiped All photos")
     files.clear()
 
 #retreivePhotos loops through all the subdirectory posts and passes each post to evaluate
