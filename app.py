@@ -1,3 +1,4 @@
+#alex Shelton
 
 
 from InstagramAPI import InstagramAPI
@@ -12,27 +13,26 @@ import time
 import hashlib
 import sys #arguments to the script
 from multiprocessing import Process
+import subprocess #calls shell script uppon startup
 
-client_id= 'bggfuF1vKehqyg'
-client_secret='pxIaMYmHVN3i28oYKk-D1qGv9_g'
-password='memeanddestroy'
-user_agent = 'memePuller'
-username = 'almightyMeme'
+## Reddit Script API Credentials ## Visit reddit / pref / app
+client_id= ''
+client_secret=''
+password=''
+user_agent = ''
+username = ''
+#####     #####     #####     #####     #####
+## Path where files will be saved to ##
+path = ''
 
-path = '/Dev/Python/Meme/code_with_pics'
-
-#Instagram username & Password is passed into program through arguments given to code
-insta_user = sys.argv[1]
-insta_pswd = sys.argv[2]
-#timeBetweenPosts = sys.argv[3] #in minutes:
-
+#List of subreddits to browse through
 subreddit_list = ['memes','dank_meme']
-
+#Captions to add to photo post
 captionList = ['Beans','jajaja','Premium memes posted all day every day','I post memes all day', 'All I do is make and browse memes', 'My memes are superior just admit it','Share this with 5 homies', 'I need to get off the internet', 'Krumpit','Fart','ayy lmao', 'Haha rawr XD', 'If I punch myself and it hurts does that make me strong or weak?']
-
+# Tags to add to post
 tags = '#dankmemes #memes #meme #dank #funny #lol #cringe #edgy #dankmeme #edgymemes #funnymemes #anime #memesdaily #lmfao #follow #comedy #hilarious #nochill #ayylmao #triggered #fortnite #savage'
 
-files = ['e211e09d85a66139dac0a2828583c30414154b33.jpg']
+files = []
 
 reddit = praw.Reddit(client_id=client_id,
                     client_secret=client_secret, password=password,
@@ -81,11 +81,11 @@ def evaluate(post):
     #converting to secconds and / 3600 for hours, need to absolute value to dussssse some times are (-)
     ellapsed = abs((((now - age).total_seconds()) / 3600.0))
 
-    if ellapsed < 1.5 and upvotes > 7000:
+    if ellapsed < 1.5 and upvotes > 8000:
         return True
-    elif ellapsed >= 1.5 and ellapsed <= 4 and upvotes > 10000:
+    elif ellapsed >= 1.5 and ellapsed <= 4 and upvotes > 12000:
         return True
-    elif ellapsed > 4 and ellapsed < 7 and upvotes > 30000:
+    elif ellapsed > 4 and ellapsed < 7 and upvotes > 36000:
         return True
     else:
         return False
@@ -104,31 +104,23 @@ def encodeName(post):
 #Saving a reddit post to our files using requests on the image url
 def save(post):
     url = post.url
-
     if '.png' in url:
         return #only using jpg images for formatiing
-
-
     image = requests.get(url).content
     imageName = encodeName(post)
-
-
     with open(imageName, 'wb') as handler:
         handler.write(image)
         print('Image saved from meme: ' + str(post.title) + '\nImage had ' + str(post.ups) + ' upvotes')
-
     #Saving filename to list:
     files.append(imageName)
 
 
 #Wipe all files goes through the list of files and deletes each file from the folder and list for a fresh start
 def wipeAllFiles():
-    for file in files:
-        os.remove(file)
+    subprocess.call(['./cleanfile.sh'], shell=True) #calling shell file to erase all photos
     files.clear()
 
 
-#retreivePhotos loops through all the subdirectory posts and passes each post to evaluate
 def retreivePhotos():
     print("Scraping images,")
     for name in subreddit_list:
@@ -158,39 +150,33 @@ def autonomousUser(timeBetweenPosts):
 
 
 
-def greetingNewFollower():
-    instaBot.getSelfUserFollowers()
-    followers = instaBot.LastJson
-    for follower in followers:
-        print(followers['user']['pk'])
 
 
-
-
-def commentModerator():
-    user_posts = instaBot.getSelfUserFeed()
-    feed = instaBot.LastJson
-    numPosts = 0
-    while numPosts < 5:
-        latestMediaItem = feed["items"][numPosts]
-        latestMediaItemID = latestMediaItem["caption"]["media_id"]
-        instaBot.getMediaComments(latestMediaItem)
-        comments = instaBot.LastJson
-
-        for comment in comments:
-            print(comment['text'])
+# def commentModerator():
+#     user_posts = instaBot.getSelfUserFeed()
+#     feed = instaBot.LastJson
+#     numPosts = 0
+#     while numPosts < 5:
+#         latestMediaItem = feed["items"][numPosts]
+#         latestMediaItemID = latestMediaItem["caption"]["media_id"]
+#         instaBot.getMediaComments(latestMediaItem)
+#         comments = instaBot.LastJson
+#
+#         for comment in comments:
+#             print(comment['user']['comment']['text'])
 
 
 
 if __name__ == '__main__':
     #Creating bot
-    instaBot = InstagramAPI(insta_user,insta_pswd)
+    subprocess.call(['./cleanfile.sh'], shell=True) #calling shell file to erase all photos
+    instaBot = InstagramAPI(sys.argv[1], sys.argv[2])
     instaBot.login()
-
-    #process 1.) Autonomous searching and posting:
-    auto = Process(target = autonomousUser(int(sys.argv[3])))
-    auto.start() #starting first process of bot
-    # greetingNewFollower()
-
-
+    # #
+    # #process 1.) Autonomous searching and posting:
+    autoUser = Process(target = autonomousUser(int(sys.argv[3])))
+    autoUser.start() #starting first process of bot
+    # #
+    # #
+    #
     instaBot.logout()
